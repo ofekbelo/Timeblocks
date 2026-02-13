@@ -1,0 +1,9 @@
+# Environment
+.env
+
+# Build
+dist/
+node_modules/
+
+# Prisma
+prisma/migrations/**/migration.sql
