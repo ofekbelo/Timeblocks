@@ -1,0 +1,17 @@
+# Dependencies
+node_modules
+pnpm-lock.yaml
+
+# Build outputs
+dist
+build
+.next
+out
+coverage
+
+# Turborepo
+.turbo
+
+# Misc
+*.log
+.DS_Store

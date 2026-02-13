@@ -1,0 +1,68 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local", "tsconfig.json", ".eslintrc.js"],
+  "globalEnv": [
+    "NODE_ENV",
+    "DATABASE_URL",
+    "JWT_SECRET",
+    "JWT_REFRESH_SECRET",
+    "RESEND_API_KEY",
+    "VITE_API_URL",
+    "FRONTEND_URL"
+  ],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "build/**", "!build/**/*.map"],
+      "env": ["VITE_API_URL", "DATABASE_URL", "NODE_ENV"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^build"]
+    },
+    "lint": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"],
+      "inputs": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "test/**/*.ts",
+        "test/**/*.tsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/*.test.ts",
+        "**/*.test.tsx"
+      ]
+    },
+    "test:watch": {
+      "cache": false,
+      "persistent": true
+    },
+    "clean": {
+      "cache": false
+    },
+    "@timeblocks/shared#build": {
+      "outputs": ["dist/**"],
+      "dependsOn": []
+    },
+    "@timeblocks/server#dev": {
+      "dependsOn": ["@timeblocks/shared#build"],
+      "persistent": true,
+      "cache": false
+    },
+    "@timeblocks/web#dev": {
+      "dependsOn": ["@timeblocks/shared#build"],
+      "persistent": true,
+      "cache": false
+    }
+  }
+}
