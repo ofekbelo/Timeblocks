@@ -1,6 +1,4 @@
-import { z } from 'zod';
-import { createProjectSchema } from './create-project.dto';
+import { updateProjectSchema, UpdateProjectInput } from '@timeblocks/shared/schemas';
 
-export const updateProjectSchema = createProjectSchema.partial();
-
-export type UpdateProjectDto = z.infer<typeof updateProjectSchema>;
+export { updateProjectSchema };
+export type UpdateProjectDto = UpdateProjectInput;

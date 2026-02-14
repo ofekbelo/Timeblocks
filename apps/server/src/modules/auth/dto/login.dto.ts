@@ -1,8 +1,4 @@
-import { z } from 'zod';
+import { loginSchema, LoginInput } from '@timeblocks/shared/schemas';
 
-export const loginSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(1, 'Password is required'),
-});
-
-export type LoginDto = z.infer<typeof loginSchema>;
+export { loginSchema };
+export type LoginDto = LoginInput;

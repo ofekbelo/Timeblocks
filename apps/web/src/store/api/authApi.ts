@@ -1,32 +1,7 @@
 import { baseApi } from './baseApi';
+import type { User, AuthResponse, RegisterDto, LoginDto } from '@timeblocks/shared/types';
 
-export interface User {
-  id: string;
-  email: string;
-  fullName: string;
-  avatarUrl?: string;
-  emailVerified: boolean;
-  timezone: string;
-  currency: string;
-  createdAt: string;
-}
-
-export interface RegisterDto {
-  email: string;
-  password: string;
-  fullName: string;
-}
-
-export interface LoginDto {
-  email: string;
-  password: string;
-}
-
-export interface AuthResponse {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
-}
+export type { User, AuthResponse, RegisterDto, LoginDto };
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({

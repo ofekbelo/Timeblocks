@@ -53,6 +53,9 @@ importers:
       '@prisma/client':
         specifier: ^5.7.0
         version: 5.22.0(prisma@5.22.0)
+      '@timeblocks/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       bcrypt:
         specifier: ^5.1.1
         version: 5.1.1
@@ -120,6 +123,9 @@ importers:
       '@reduxjs/toolkit':
         specifier: ^2.0.1
         version: 2.11.2(react-redux@9.2.0)(react@18.3.1)
+      '@timeblocks/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -175,6 +181,16 @@ importers:
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.2(eslint@8.57.1)
+
+  packages/shared:
+    dependencies:
+      zod:
+        specifier: ^3.22.4
+        version: 3.25.76
+    devDependencies:
+      typescript:
+        specifier: ^5.3.3
+        version: 5.9.3
 
 packages:
 

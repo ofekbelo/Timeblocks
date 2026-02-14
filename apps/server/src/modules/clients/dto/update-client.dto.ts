@@ -1,6 +1,4 @@
-import { z } from 'zod';
-import { createClientSchema } from './create-client.dto';
+import { updateClientSchema, UpdateClientInput } from '@timeblocks/shared/schemas';
 
-export const updateClientSchema = createClientSchema.partial();
-
-export type UpdateClientDto = z.infer<typeof updateClientSchema>;
+export { updateClientSchema };
+export type UpdateClientDto = UpdateClientInput;
