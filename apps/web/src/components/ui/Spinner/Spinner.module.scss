@@ -1,0 +1,46 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.spinner {
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+
+  &.sm {
+    width: 1rem;
+    height: 1rem;
+    border-width: 2px;
+  }
+
+  &.md {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-width: 2px;
+  }
+
+  &.lg {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-width: 3px;
+  }
+
+  &.primary {
+    border: 2px solid rgba($color-primary, 0.2);
+    border-top-color: $color-primary;
+  }
+
+  &.white {
+    border: 2px solid rgba(white, 0.2);
+    border-top-color: white;
+  }
+
+  &.gray {
+    border: 2px solid rgba($color-gray-400, 0.2);
+    border-top-color: $color-gray-400;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,41 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.card {
+  background: white;
+  border-radius: $border-radius-lg;
+  transition: all $transition-base;
+
+  &.default {
+    border: $border-width-thin solid $color-gray-200;
+  }
+
+  &.outlined {
+    border: $border-width-medium solid $color-gray-300;
+  }
+
+  &.elevated {
+    box-shadow: $shadow-md;
+
+    &:hover {
+      box-shadow: $shadow-lg;
+      transform: translateY(-2px);
+    }
+  }
+
+  &.padding-none {
+    padding: 0;
+  }
+
+  &.padding-sm {
+    padding: $spacing-md;
+  }
+
+  &.padding-md {
+    padding: $spacing-lg;
+  }
+
+  &.padding-lg {
+    padding: $spacing-xl;
+  }
+}

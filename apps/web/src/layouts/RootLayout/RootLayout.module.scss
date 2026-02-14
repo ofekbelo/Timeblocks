@@ -1,0 +1,39 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f7fafc;
+}
+
+.main {
+  flex: 1;
+  transition: margin-left 0.3s ease;
+
+  &.sidebarOpen {
+    margin-left: 260px;
+  }
+
+  &.sidebarClosed {
+    margin-left: 80px;
+  }
+}
+
+.content {
+  padding: 2rem;
+  min-height: calc(100vh - 70px);
+}
+
+@media (max-width: 768px) {
+  .main {
+    &.sidebarOpen {
+      margin-left: 0;
+    }
+
+    &.sidebarClosed {
+      margin-left: 0;
+    }
+  }
+
+  .content {
+    padding: 1rem;
+  }
+}

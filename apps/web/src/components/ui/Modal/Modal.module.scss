@@ -1,0 +1,76 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-lg;
+  z-index: $z-index-modal;
+  @include fade-in;
+}
+
+.modal {
+  background: white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-2xl;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  &.sm {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  &.md {
+    width: 100%;
+    max-width: 600px;
+  }
+
+  &.lg {
+    width: 100%;
+    max-width: 800px;
+  }
+
+  &.xl {
+    width: 100%;
+    max-width: 1000px;
+  }
+}
+
+.header {
+  @include flex-between;
+  padding: $spacing-lg;
+  border-bottom: $border-width-thin solid $color-gray-200;
+}
+
+.title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-gray-900;
+}
+
+.closeBtn {
+  @include button-reset;
+  width: 2rem;
+  height: 2rem;
+  @include flex-center;
+  border-radius: $border-radius-md;
+  color: $color-gray-500;
+  transition: all $transition-base;
+
+  &:hover {
+    background-color: $color-gray-100;
+    color: $color-gray-900;
+  }
+}
+
+.content {
+  padding: $spacing-lg;
+  overflow-y: auto;
+}

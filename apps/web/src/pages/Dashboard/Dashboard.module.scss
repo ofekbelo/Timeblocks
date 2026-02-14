@@ -1,0 +1,58 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+}
+
+.header {
+  @include flex-between;
+
+  h1 {
+    font-size: $font-size-3xl;
+    margin-bottom: $spacing-xs;
+  }
+
+  p {
+    color: $color-gray-600;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $spacing-lg;
+}
+
+.stat {
+  text-align: center;
+}
+
+.statValue {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+}
+
+.statLabel {
+  font-size: $font-size-sm;
+  color: $color-gray-600;
+  margin-top: $spacing-xs;
+}
+
+.sectionTitle {
+  font-size: $font-size-xl;
+  margin-bottom: $spacing-lg;
+}
+
+.emptyState {
+  text-align: center;
+  padding: $spacing-3xl;
+  color: $color-gray-600;
+
+  p {
+    margin-bottom: $spacing-lg;
+  }
+}

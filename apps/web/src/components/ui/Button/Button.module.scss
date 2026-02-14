@@ -1,0 +1,109 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.button {
+  @include flex-center;
+  gap: $spacing-sm;
+  border: none;
+  border-radius: $border-radius-md;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-base;
+  position: relative;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &.sm {
+    padding: $spacing-sm $spacing-md;
+    font-size: $font-size-sm;
+  }
+
+  &.md {
+    padding: 0.625rem $spacing-lg;
+    font-size: $font-size-base;
+  }
+
+  &.lg {
+    padding: $spacing-md $spacing-xl;
+    font-size: $font-size-lg;
+  }
+
+  &.fullWidth {
+    width: 100%;
+  }
+
+  // Variants
+  &.primary {
+    background-color: $color-primary;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background-color: $color-primary-dark;
+      transform: translateY(-1px);
+      box-shadow: $shadow-md;
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+
+  &.secondary {
+    background-color: $color-gray-200;
+    color: $color-gray-800;
+
+    &:hover:not(:disabled) {
+      background-color: $color-gray-300;
+    }
+  }
+
+  &.success {
+    background-color: $color-success;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background-color: $color-success-dark;
+    }
+  }
+
+  &.danger {
+    background-color: $color-danger;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background-color: $color-danger-dark;
+    }
+  }
+
+  &.ghost {
+    background-color: transparent;
+    color: $color-primary;
+
+    &:hover:not(:disabled) {
+      background-color: rgba($color-primary, 0.1);
+    }
+  }
+
+  // Loading state
+  &.loading {
+    .content {
+      opacity: 0.6;
+    }
+  }
+}
+
+.spinner {
+  @include spinner(1rem);
+  position: absolute;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
