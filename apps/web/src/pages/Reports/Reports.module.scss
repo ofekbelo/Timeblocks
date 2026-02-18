@@ -1,0 +1,45 @@
+@use '@/styles/variables' as *;
+
+.reports {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  @media (max-width: $breakpoint-tablet) {
+    padding: 1.5rem;
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    padding: 1rem;
+  }
+}
+
+.header {
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $color-text-primary;
+    margin: 0 0 0.5rem;
+  }
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: $color-text-secondary;
+  margin: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.loading {
+  padding: 3rem;
+  text-align: center;
+  color: $color-text-secondary;
+  font-size: 1rem;
+}

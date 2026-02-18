@@ -3,32 +3,38 @@
   "version": "1.0.0",
   "description": "Shared types, schemas, and utilities for TimeBlocks",
   "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     },
     "./types": {
       "types": "./dist/types/index.d.ts",
-      "default": "./dist/types/index.js"
+      "import": "./dist/types/index.mjs",
+      "require": "./dist/types/index.js"
     },
     "./schemas": {
       "types": "./dist/schemas/index.d.ts",
-      "default": "./dist/schemas/index.js"
+      "import": "./dist/schemas/index.mjs",
+      "require": "./dist/schemas/index.js"
     },
     "./constants": {
       "types": "./dist/constants/index.d.ts",
-      "default": "./dist/constants/index.js"
+      "import": "./dist/constants/index.mjs",
+      "require": "./dist/constants/index.js"
     },
     "./utils": {
       "types": "./dist/utils/index.d.ts",
-      "default": "./dist/utils/index.js"
+      "import": "./dist/utils/index.mjs",
+      "require": "./dist/utils/index.js"
     }
   },
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
+    "build": "tsup",
+    "dev": "tsup --watch",
     "clean": "rm -rf dist node_modules .turbo",
     "typecheck": "tsc --noEmit"
   },
@@ -36,6 +42,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "tsup": "^8.5.1",
     "typescript": "^5.3.3"
   }
 }

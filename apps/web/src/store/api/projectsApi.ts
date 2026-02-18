@@ -1,43 +1,23 @@
 import { baseApi } from './baseApi';
+import type {
+  Project,
+  ProjectWithClient,
+} from '@timeblocks/shared/types';
+import type { CreateProjectInput } from '@timeblocks/shared/schemas';
 
-export interface Project {
-  id: string;
-  userId: string;
-  clientId?: string;
-  name: string;
-  hourlyRate?: number;
-  estimatedBudget?: number;
-  startDate?: string;
-  endDate?: string;
-  status: 'ACTIVE' | 'ON_HOLD' | 'COMPLETED' | 'ARCHIVED';
-  color: string;
-  isArchived: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface CreateProjectDto {
-  name: string;
-  clientId?: string;
-  hourlyRate?: number;
-  estimatedBudget?: number;
-  startDate?: string;
-  endDate?: string;
-  color?: string;
-  status?: 'ACTIVE' | 'ON_HOLD' | 'COMPLETED' | 'ARCHIVED';
-}
+export type { Project, ProjectWithClient, CreateProjectInput };
 
 export const projectsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getProjects: builder.query<Project[], void>({
+    getProjects: builder.query<ProjectWithClient[], void>({
       query: () => '/projects',
       providesTags: ['Project'],
     }),
-    getProject: builder.query<Project, string>({
+    getProject: builder.query<ProjectWithClient, string>({
       query: (id) => `/projects/${id}`,
       providesTags: (_result, _error, id) => [{ type: 'Project', id }],
     }),
-    createProject: builder.mutation<Project, CreateProjectDto>({
+    createProject: builder.mutation<ProjectWithClient, CreateProjectInput>({
       query: (body) => ({
         url: '/projects',
         method: 'POST',
@@ -45,7 +25,7 @@ export const projectsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Project'],
     }),
-    updateProject: builder.mutation<Project, { id: string; data: Partial<CreateProjectDto> }>({
+    updateProject: builder.mutation<ProjectWithClient, { id: string; data: Partial<CreateProjectInput> }>({
       query: ({ id, data }) => ({
         url: `/projects/${id}`,
         method: 'PATCH',

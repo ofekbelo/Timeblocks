@@ -1,0 +1,85 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+
+.timerPage {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin: 0 0 0.5rem 0;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: $color-text-secondary;
+  margin: 0;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+  align-items: start;
+}
+
+.mainSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.sideSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: sticky;
+  top: 2rem;
+}
+
+// Responsive
+@media (max-width: $breakpoint-desktop) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .sideSection {
+    position: static;
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .timerPage {
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .timerPage {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+}

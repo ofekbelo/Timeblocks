@@ -5,6 +5,12 @@ import { ProtectedRoute } from '@/components/common/ProtectedRoute/ProtectedRout
 import { Login } from '@/pages/auth/Login';
 import { Register } from '@/pages/auth/Register';
 import { Dashboard } from '@/pages/Dashboard/Dashboard';
+import { Timer } from '@/pages/Timer';
+import { ProjectsList } from '@/pages/Projects/ProjectsList';
+import { ProjectForm } from '@/pages/Projects/ProjectForm';
+import { ClientsList } from '@/pages/Clients/ClientsList';
+import { ClientForm } from '@/pages/Clients/ClientForm';
+import { Reports } from '@/pages/Reports';
 
 export const router = createBrowserRouter([
   {
@@ -24,12 +30,22 @@ export const router = createBrowserRouter([
         element: <RootLayout />,
         children: [
           { index: true, element: <Dashboard /> },
-          { path: 'timer', element: <div>Timer Page (Coming Soon)</div> },
-          { path: 'projects', element: <div>Projects Page (Coming Soon)</div> },
-          { path: 'clients', element: <div>Clients Page (Coming Soon)</div> },
-          { path: 'time-entries', element: <div>Time Entries Page (Coming Soon)</div> },
-          { path: 'reports', element: <div>Reports Page (Coming Soon)</div> },
-          { path: 'settings', element: <div>Settings Page (Coming Soon)</div> },
+          { path: 'timer', element: <Timer /> },
+
+          // Projects routes
+          { path: 'projects', element: <ProjectsList /> },
+          { path: 'projects/new', element: <ProjectForm /> },
+          { path: 'projects/:id/edit', element: <ProjectForm /> },
+
+          // Clients routes
+          { path: 'clients', element: <ClientsList /> },
+          { path: 'clients/new', element: <ClientForm /> },
+          { path: 'clients/:id/edit', element: <ClientForm /> },
+
+          // Other routes
+          { path: 'time-entries', element: <div>Time Entries (Coming Soon)</div> },
+          { path: 'reports', element: <Reports /> },
+          { path: 'settings', element: <div>Settings (Coming Soon)</div> },
         ],
       },
     ],

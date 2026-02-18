@@ -1,0 +1,1 @@
+export { RecentEntries } from './RecentEntries';

@@ -1,38 +1,39 @@
 import { baseApi } from './baseApi';
+import type {
+  TimeEntry,
+  TimeEntryWithProject,
+  CreateTimeEntryDto,
+  StartTimerDto,
+} from '@timeblocks/shared/types';
 
-export interface TimeEntry {
-  id: string;
-  userId: string;
-  projectId: string;
-  description?: string;
-  startTime: string;
-  endTime?: string;
-  duration?: number;
-  isManual: boolean;
-  tags: string[];
-  createdAt: string;
-  updatedAt: string;
-}
+export type { TimeEntry, TimeEntryWithProject, CreateTimeEntryDto, StartTimerDto };
 
-export interface CreateTimeEntryDto {
-  projectId: string;
-  description?: string;
-  startTime: string;
-  endTime?: string;
-  tags?: string[];
+export interface GetTimeEntriesParams {
+  startDate?: string;
+  endDate?: string;
+  limit?: number;
 }
 
 export const timeEntriesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getTimeEntries: builder.query<TimeEntry[], void>({
-      query: () => '/time-entries',
+    getTimeEntries: builder.query<TimeEntryWithProject[], GetTimeEntriesParams | void>({
+      query: (params) => {
+        const queryParams = new URLSearchParams();
+        if (params && typeof params === 'object') {
+          if (params.startDate) queryParams.append('startDate', params.startDate);
+          if (params.endDate) queryParams.append('endDate', params.endDate);
+          if (params.limit) queryParams.append('limit', params.limit.toString());
+        }
+        const queryString = queryParams.toString();
+        return queryString ? `/time-entries?${queryString}` : '/time-entries';
+      },
       providesTags: ['TimeEntry'],
     }),
-    getTimeEntry: builder.query<TimeEntry, string>({
+    getTimeEntry: builder.query<TimeEntryWithProject, string>({
       query: (id) => `/time-entries/${id}`,
       providesTags: (_result, _error, id) => [{ type: 'TimeEntry', id }],
     }),
-    createTimeEntry: builder.mutation<TimeEntry, CreateTimeEntryDto>({
+    createTimeEntry: builder.mutation<TimeEntryWithProject, CreateTimeEntryDto>({
       query: (body) => ({
         url: '/time-entries',
         method: 'POST',
@@ -40,7 +41,7 @@ export const timeEntriesApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['TimeEntry'],
     }),
-    updateTimeEntry: builder.mutation<TimeEntry, { id: string; data: Partial<CreateTimeEntryDto> }>({
+    updateTimeEntry: builder.mutation<TimeEntryWithProject, { id: string; data: Partial<CreateTimeEntryDto> }>({
       query: ({ id, data }) => ({
         url: `/time-entries/${id}`,
         method: 'PATCH',
@@ -55,7 +56,7 @@ export const timeEntriesApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['TimeEntry'],
     }),
-    startTimer: builder.mutation<TimeEntry, { projectId: string; description?: string }>({
+    startTimer: builder.mutation<TimeEntryWithProject, StartTimerDto>({
       query: (body) => ({
         url: '/time-entries/start-timer',
         method: 'POST',
@@ -63,14 +64,14 @@ export const timeEntriesApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['TimeEntry'],
     }),
-    stopTimer: builder.mutation<TimeEntry, void>({
+    stopTimer: builder.mutation<TimeEntryWithProject, void>({
       query: () => ({
         url: '/time-entries/stop-timer',
         method: 'POST',
       }),
       invalidatesTags: ['TimeEntry'],
     }),
-    getActiveTimer: builder.query<TimeEntry | null, void>({
+    getActiveTimer: builder.query<TimeEntryWithProject | null, void>({
       query: () => '/time-entries/active-timer',
       providesTags: ['TimeEntry'],
     }),

@@ -29,15 +29,18 @@ export class TimeEntriesController {
   @ApiOperation({ summary: 'Get all time entries' })
   @ApiQuery({ name: 'startDate', required: false, type: String })
   @ApiQuery({ name: 'endDate', required: false, type: String })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
   findAll(
     @CurrentUser() user: any,
     @Query('startDate') startDate?: string,
-    @Query('endDate') endDate?: string
+    @Query('endDate') endDate?: string,
+    @Query('limit') limit?: string
   ) {
     return this.timeEntriesService.findAll(
       user.id,
       startDate ? new Date(startDate) : undefined,
-      endDate ? new Date(endDate) : undefined
+      endDate ? new Date(endDate) : undefined,
+      limit ? parseInt(limit, 10) : undefined
     );
   }
 

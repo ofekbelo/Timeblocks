@@ -1,0 +1,197 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+
+.clientsPage {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  @include flex-between;
+  margin-bottom: $spacing-xl;
+
+  h1 {
+    font-size: $font-size-3xl;
+    margin-bottom: $spacing-xs;
+  }
+
+  p {
+    color: $color-gray-600;
+  }
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem $spacing-md;
+  border: 2px solid $color-gray-300;
+  border-radius: $border-radius-md;
+  font-size: $font-size-base;
+  transition: all $transition-base;
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: $spacing-lg;
+  margin-top: $spacing-xl;
+}
+
+.clientCard {
+  display: flex;
+  gap: $spacing-lg;
+  align-items: start;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  @include flex-center;
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: white;
+  flex-shrink: 0;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+
+  h3 {
+    font-size: $font-size-lg;
+    margin-bottom: $spacing-sm;
+    @include truncate;
+  }
+}
+
+.email,
+.phone {
+  font-size: $font-size-sm;
+  color: $color-gray-600;
+  margin-bottom: $spacing-xs;
+  @include truncate;
+}
+
+.actions {
+  display: flex;
+  gap: $spacing-sm;
+  margin-top: $spacing-md;
+  padding-top: $spacing-md;
+  border-top: 1px solid $color-gray-200;
+  flex-wrap: wrap;
+}
+
+.empty {
+  @include flex-center;
+  flex-direction: column;
+  gap: $spacing-lg;
+  padding: $spacing-3xl;
+  color: $color-gray-600;
+}
+
+.loading {
+  @include flex-center;
+  flex-direction: column;
+  gap: $spacing-md;
+  padding: $spacing-3xl;
+}
+
+.modalActions {
+  display: flex;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+  justify-content: flex-end;
+}
+
+// Form styles
+.formPage {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+
+  label {
+    font-weight: $font-weight-medium;
+    color: $color-gray-700;
+  }
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-lg;
+
+  @media (max-width: $breakpoint-md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.textarea {
+  padding: 0.75rem $spacing-md;
+  border: 2px solid $color-gray-300;
+  border-radius: $border-radius-md;
+  font-size: $font-size-base;
+  font-family: inherit;
+  resize: vertical;
+  transition: all $transition-base;
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+  }
+}
+
+.error {
+  font-size: $font-size-sm;
+  color: $color-danger;
+}
+
+.colorPicker {
+  display: flex;
+  gap: $spacing-sm;
+  flex-wrap: wrap;
+}
+
+.colorButton {
+  width: 40px;
+  height: 40px;
+  border-radius: $border-radius-md;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all $transition-base;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &.selected {
+    border-color: $color-gray-900;
+    transform: scale(1.15);
+  }
+}
+
+.actions {
+  display: flex;
+  gap: $spacing-md;
+  justify-content: flex-end;
+  margin-top: $spacing-lg;
+  padding-top: $spacing-lg;
+  border-top: 1px solid $color-gray-200;
+}

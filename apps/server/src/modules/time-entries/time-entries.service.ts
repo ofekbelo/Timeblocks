@@ -13,7 +13,7 @@ import { StartTimerDto } from './dto/start-timer.dto';
 export class TimeEntriesService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(userId: string, startDate?: Date, endDate?: Date) {
+  async findAll(userId: string, startDate?: Date, endDate?: Date, limit?: number) {
     return this.prisma.timeEntry.findMany({
       where: {
         userId,
@@ -30,6 +30,7 @@ export class TimeEntriesService {
         },
       },
       orderBy: { startTime: 'desc' },
+      take: limit,
     });
   }
 
