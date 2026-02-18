@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '@/store/api/authApi';
 import { useAppDispatch } from '@/store/hooks';
 import { setCredentials } from '@/store/slices/authSlice';
@@ -56,6 +56,15 @@ export function Login() {
             required
             fullWidth
           />
+
+          <div style={{ textAlign: 'right' }}>
+            <Link
+              to="/auth/forgot-password"
+              style={{ fontSize: '0.875rem', color: '#667eea', textDecoration: 'none' }}
+            >
+              Forgot password?
+            </Link>
+          </div>
 
           <Button type="submit" isLoading={isLoading} fullWidth>
             Login

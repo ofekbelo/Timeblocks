@@ -8,6 +8,8 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '@/prisma/prisma.service';
+import { EmailService } from '@/modules/email/email.service';
+import { TokensUtil } from '@/utils/tokens.util';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 
@@ -16,7 +18,8 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private emailService: EmailService,
   ) {}
 
   async register(dto: RegisterDto) {
@@ -32,25 +35,39 @@ export class AuthService {
     // Hash password
     const hashedPassword = await bcrypt.hash(dto.password, 12);
 
+    // Generate verification token
+    const { token, hashedToken, expiresAt } = TokensUtil.generateTokenWithExpiry(24);
+
     // Create user
     const user = await this.prisma.user.create({
       data: {
         email: dto.email,
         passwordHash: hashedPassword,
         fullName: dto.fullName,
+        emailVerified: false,
+        verificationToken: hashedToken,
+        verificationExpires: expiresAt,
       },
       select: {
         id: true,
         email: true,
         fullName: true,
+        emailVerified: true,
         createdAt: true,
       },
     });
 
+    // Send verification email
+    const frontendUrl = this.configService.get<string>('email.frontendUrl');
+    const verificationLink = `${frontendUrl}/auth/verify-email?token=${token}`;
+
+    await this.emailService.sendVerificationEmail(user.email, {
+      fullName: user.fullName,
+      verificationLink,
+    });
+
     // Generate tokens
     const tokens = await this.generateTokens(user.id, user.email);
-
-    // TODO: Send verification email (will be done by Agent 6)
 
     return {
       user,
@@ -137,25 +154,150 @@ export class AuthService {
     }
   }
 
-  async forgotPassword(email: string) {
+  async verifyEmail(token: string) {
+    const hashedToken = TokensUtil.hashToken(token);
+
+    const user = await this.prisma.user.findFirst({
+      where: {
+        verificationToken: hashedToken,
+        verificationExpires: {
+          gt: new Date(),
+        },
+      },
+    });
+
+    if (!user) {
+      throw new BadRequestException('Invalid or expired verification token');
+    }
+
+    // Update user
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        emailVerified: true,
+        verificationToken: null,
+        verificationExpires: null,
+      },
+    });
+
+    // Send welcome email
+    const frontendUrl = this.configService.get<string>('email.frontendUrl');
+    const loginLink = `${frontendUrl}/auth/login`;
+
+    await this.emailService.sendWelcomeEmail(user.email, {
+      fullName: user.fullName,
+      loginLink,
+    });
+
+    return { message: 'Email verified successfully' };
+  }
+
+  async resendVerification(email: string) {
     const user = await this.prisma.user.findUnique({
       where: { email },
     });
 
     if (!user) {
-      // Don't reveal if user exists
+      throw new BadRequestException('User not found');
+    }
+
+    if (user.emailVerified) {
+      throw new BadRequestException('Email already verified');
+    }
+
+    // Generate new token
+    const { token, hashedToken, expiresAt } = TokensUtil.generateTokenWithExpiry(24);
+
+    // Update user
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        verificationToken: hashedToken,
+        verificationExpires: expiresAt,
+      },
+    });
+
+    // Send email
+    const frontendUrl = this.configService.get<string>('email.frontendUrl');
+    const verificationLink = `${frontendUrl}/auth/verify-email?token=${token}`;
+
+    await this.emailService.sendVerificationEmail(user.email, {
+      fullName: user.fullName,
+      verificationLink,
+    });
+
+    return { message: 'Verification email sent' };
+  }
+
+  async forgotPassword(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    // Don't reveal if user exists
+    if (!user) {
       return { message: 'If the email exists, a reset link has been sent' };
     }
 
-    // TODO: Generate reset token and send email (will be done by Agent 6)
-    // For now, just return success message
+    // Generate reset token
+    const { token, hashedToken, expiresAt } = TokensUtil.generateTokenWithExpiry(1); // 1 hour
+
+    // Update user
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        passwordResetToken: hashedToken,
+        passwordResetExpires: expiresAt,
+      },
+    });
+
+    // Send email
+    const frontendUrl = this.configService.get<string>('email.frontendUrl');
+    const resetLink = `${frontendUrl}/auth/reset-password?token=${token}`;
+
+    await this.emailService.sendPasswordResetEmail(user.email, {
+      fullName: user.fullName,
+      resetLink,
+    });
 
     return { message: 'If the email exists, a reset link has been sent' };
   }
 
-  async resetPassword(_token: string, _newPassword: string) {
-    // TODO: Verify reset token and update password (will be done by Agent 6)
-    throw new BadRequestException('Password reset not yet implemented');
+  async resetPassword(token: string, newPassword: string) {
+    const hashedToken = TokensUtil.hashToken(token);
+
+    const user = await this.prisma.user.findFirst({
+      where: {
+        passwordResetToken: hashedToken,
+        passwordResetExpires: {
+          gt: new Date(),
+        },
+      },
+    });
+
+    if (!user) {
+      throw new BadRequestException('Invalid or expired reset token');
+    }
+
+    // Hash new password
+    const passwordHash = await bcrypt.hash(newPassword, 12);
+
+    // Update user
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        passwordHash,
+        passwordResetToken: null,
+        passwordResetExpires: null,
+      },
+    });
+
+    // Invalidate all refresh tokens for security
+    await this.prisma.refreshToken.deleteMany({
+      where: { userId: user.id },
+    });
+
+    return { message: 'Password reset successfully' };
   }
 
   private async generateTokens(userId: string, email: string) {

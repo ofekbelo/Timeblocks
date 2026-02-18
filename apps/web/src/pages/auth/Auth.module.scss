@@ -107,3 +107,55 @@
     }
   }
 }
+
+.verifying,
+.success,
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+
+  .success & {
+    background-color: rgba(72, 187, 120, 0.1);
+    color: #48bb78;
+  }
+
+  .error & {
+    background-color: rgba(245, 101, 101, 0.1);
+    color: #f56565;
+  }
+}
+
+.message {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #1a202c;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.errorMessage {
+  padding: 0.75rem 1rem;
+  background: #fed7d7;
+  color: #c53030;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+}

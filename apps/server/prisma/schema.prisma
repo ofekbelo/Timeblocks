@@ -25,7 +25,13 @@ model User {
   preferences   Json?
 
   // Email verification
-  emailVerified Boolean  @default(false) @map("email_verified")
+  emailVerified         Boolean   @default(false) @map("email_verified")
+  verificationToken     String?   @unique @map("verification_token")
+  verificationExpires   DateTime? @map("verification_expires")
+
+  // Password reset
+  passwordResetToken    String?   @unique @map("password_reset_token")
+  passwordResetExpires  DateTime? @map("password_reset_expires")
 
   // Timestamps
   createdAt     DateTime @default(now()) @map("created_at")

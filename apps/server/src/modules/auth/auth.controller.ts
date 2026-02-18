@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UsePipes, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, UsePipes, Get, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ZodValidationPipe } from '@/common/pipes/zod-validation.pipe';
 import {
@@ -54,9 +54,13 @@ export class AuthController {
     return this.authService.resetPassword(dto.token, dto.password);
   }
 
-  @Get('verify-email/:token')
-  async verifyEmail(@Param('token') _token: string) {
-    // TODO: Implement email verification (Agent 6)
-    return { message: 'Email verification not yet implemented' };
+  @Get('verify-email')
+  async verifyEmail(@Query('token') token: string) {
+    return this.authService.verifyEmail(token);
+  }
+
+  @Post('resend-verification')
+  async resendVerification(@Body('email') email: string) {
+    return this.authService.resendVerification(email);
   }
 }
